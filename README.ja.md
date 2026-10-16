@@ -120,3 +120,7 @@ prototypes/              Original editable interface prototype
 ## 依存関係とライセンス
 
 スマートフォンの地図描画は MapLibre GL JS 5.10.0 を利用し、既定のサービスは OpenFreeMap、Photon、BRouter です。帰属表示と第三者ライセンスを維持してください。[THIRD_PARTY.md](THIRD_PARTY.md) にまとめています。プロジェクト独自コードのオープンソースライセンスは未選択です。公開されていること自体が自由な再利用の許諾を意味するものではありません。
+
+移行用ディレクトリで独立したビルドと確認を実施しました。[移行確認記録](docs/PORTABILITY_CHECK.md)をご覧ください。
+
+[Release · APK / ZIP](https://github.com/1xiaohuozi/velo-bike-computer/releases/tag/v1.0.4)

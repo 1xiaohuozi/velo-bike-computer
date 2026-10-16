@@ -110,7 +110,7 @@ prototypes/              Original editable interface prototype
 
 ## 验证
 
-1.0.4 开发记录：19 项清除路线与界面专项检查、59 项应用集成回归通过。仓库整理后还会单独检查便携构建与迁移脚本；两类验证不得混为实机验收。
+1.0.4 开发记录：19 项清除路线与界面专项检查、59 项应用集成回归通过。迁移检查与实机验收分别记录。
 
 ```powershell
 # Disposable Android emulator only; build the app first.
@@ -120,3 +120,7 @@ prototypes/              Original editable interface prototype
 ## 依赖与许可
 
 手机地图使用 MapLibre GL JS 5.10.0，默认服务为 OpenFreeMap、Photon 与 BRouter。保留地图署名与第三方许可，详见 [THIRD_PARTY.md](THIRD_PARTY.md)。本仓库尚未单独授予项目自有代码的开源许可证；公开可见不等于授予任意再许可权。
+
+迁移目录已完成独立构建和检查，见 [迁移验证记录](docs/PORTABILITY_CHECK.md)。
+
+[Release · APK / ZIP](https://github.com/1xiaohuozi/velo-bike-computer/releases/tag/v1.0.4)

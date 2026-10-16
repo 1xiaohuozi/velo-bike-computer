@@ -120,3 +120,7 @@ The 1.0.4 development run passed 19 route-clearing/UI checks and 59 application 
 ## Dependencies and licensing
 
 MapLibre GL JS 5.10.0 renders the phone map. Default services: OpenFreeMap, Photon and BRouter. Preserve attribution and third-party licenses; see [THIRD_PARTY.md](THIRD_PARTY.md). No separate open-source license has been selected for the project-owned code. Public visibility alone does not grant unrestricted reuse.
+
+The reorganized repository has been built and checked independently; see [portability checks](docs/PORTABILITY_CHECK.md).
+
+[Release · APK / ZIP](https://github.com/1xiaohuozi/velo-bike-computer/releases/tag/v1.0.4)

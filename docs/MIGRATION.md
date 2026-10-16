@@ -156,7 +156,7 @@ T,seq,phase,accuracy
 # 可选：native / ride / preview / route / clear
 ```
 
-测试会修改收藏和路线、授予/撤回模拟器权限、启动/结束骑行；只允许 emulator-* 设备，不要对日常手机运行。native 与 route 使用真实公共网络服务，不能当作离线稳定测试。自动化未设置为 GitHub CI。
+测试会修改收藏和路线、授予/撤回模拟器权限、启动/结束骑行；只允许 emulator-* 设备，不要对日常手机运行。native 与 route 使用真实公共网络服务，不能当作离线稳定测试。自动化未设置为 GitHub CI。纯 C++ 头文件测试可在安装 g++ 后运行 scripts/test-firmware.ps1。
 
 开发时各版本分别通过：清除/UI 19 项、应用集成 59 项、指定起终点 31 项、码表预览 16 项、GPS 服务 23 项。它们不是同一次全量验收，不代表所有手机与户外场景都验证通过。
 
