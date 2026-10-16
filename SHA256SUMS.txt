@@ -1,0 +1,5 @@
+d4bf453fb8a17a13a2fa866ac97d962b6131069462cb667af0a13826a5164e99  dist/VELO-PhoneBridge-v1.0.4.apk
+e4c55173c974da9bc95437294c6f9a0a9eca2bd28c7c7dfc006f6f5bbf3a2f5b  firmware/prebuilt-v0.10.1/BikeDash.ino.bin
+47bbbfca119fe87190f63a67af9d85adff6433bcf3812ec92a9b9c9416a53ad1  firmware/prebuilt-v0.10.1/BikeDash.ino.bootloader.bin
+f0701b097d88f11d0e96645cebb367e99432caea19e4970eab0aaa36753dc92d  firmware/prebuilt-v0.10.1/BikeDash.ino.merged.bin
+148b959cbff1c38aa8e1d5c0ba9d612c54997b945e56a63f41223eef650653a1  firmware/prebuilt-v0.10.1/BikeDash.ino.partitions.bin

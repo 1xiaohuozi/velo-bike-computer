@@ -1,0 +1,1 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="local.velo.test"><uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34"/><application android:label="VELO test"/><instrumentation android:name="local.velo.bridge.RideUiTest" android:targetPackage="local.velo.bridge"/></manifest>

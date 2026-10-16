@@ -1,0 +1,16 @@
+work/
+private-signing/
+*.keystore
+*.jks
+*.idsig
+local.properties
+.env
+.env.*
+!.env.example
+__pycache__/
+*.log
+.DS_Store
+
+**/build/
+*.elf
+*.map

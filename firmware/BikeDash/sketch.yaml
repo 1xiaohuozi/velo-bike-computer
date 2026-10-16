@@ -1,0 +1,2 @@
+default_fqbn: esp32:esp32:esp32:UploadSpeed=115200
+# Select the actual USB port on your computer.

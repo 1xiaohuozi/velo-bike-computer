@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VELO · App 改版交互原型</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<svg class="symbols" aria-hidden="true"><defs>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M6 7.5v5a3 3 0 0 0 3 3h6a3 3 0 0 0 0-6h-1M18 3v5m-2.5-2.5h5"/></symbol>
+<symbol id="i-device" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M9 7h6m-6 4h6m-4 6h2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7M7 12h14"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8Zm-10 9 10 5 10-5M2 16l10 5 10-5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13ZM8 15c0 2 1 3 3 3"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 9v12h5v-7h4v7h5V9"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14m8-14v14"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 16 12-12 4 4L8 20H4Zm10-10 4 4"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+</defs></svg>
+<main class="workspace">
+ <aside class="intro"><div class="wordmark">VELO<span>DESIGN STUDY</span></div><h1>地图是起点。<br>地点值得保存。</h1><p>围绕骑行前、骑行中、骑行后，重新组织每一步。</p><div class="prototype-label">产品交互原型 · 非 Android 安装版</div><ol><li>点地图，查看地点详情</li><li>收藏并编辑名称、分组和备注</li><li>从收藏规划，保存路线</li><li>查看骑行和设备状态</li></ol><div class="side-actions"><button data-act="jump" data-page="favorites">打开收藏</button><button data-act="theme">切换明暗</button><button data-act="reset">恢复原型示例</button></div><p class="disclaimer">收藏与路线保存在当前浏览器。道路为实际 OSM 数据；地点、路线方案、骑行及设备状态均为演示，不访问真实定位或蓝牙。</p></aside>
+ <section class="phone" aria-label="VELO 手机界面原型">
+  <header class="system-bar"><span>09:41</span><span>•••　▰</span></header>
+  <main id="app"></main><nav id="navigation" aria-label="主导航"></nav><div class="home-indicator"></div>
+  <div id="toast" role="status" aria-live="polite"></div><div id="modal"></div>
+ </section>
+ <aside class="guide"><div class="eyebrow">CURRENT FLOW</div><h2 id="flow-title">地图与地点</h2><p id="flow-description">地图保持主体，选中地点后，操作集中在底部面板。</p><hr><div class="eyebrow">四个清楚的入口</div><dl><dt>地图</dt><dd>查找、看地点、规划与导航</dd><dt>收藏</dt><dd>分组、备注、备份，随时再出发</dd><dt>路线</dt><dd>保存的路线与实际骑行记录</dd><dt>设备</dt><dd>连接、定位权限与导航设置</dd></dl><div class="guide-foot">原型只验证布局与操作闭环。实际规划、GPS、蓝牙及旧数据迁移在 Android 实现阶段接入。</div></aside>
+</main>
+<script src="roads.js"></script><script src="app.js"></script></body></html>

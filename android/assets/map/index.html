@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel="stylesheet" href="maplibre-gl.css"><style>html,body,#map{margin:0;width:100%;height:100%;overflow:hidden;background:#ebefe5}</style></head><body><div id="map"></div><script src="maplibre-gl.js"></script><script>
+'use strict';
+window.VeloState={status:'loading',error:''};
+try {
+ const blank={version:8,sources:{},layers:[{id:'paper',type:'background',paint:{'background-color':'#ebefe5'}}]};
+ const map=new maplibregl.Map({container:'map',style:blank,center:[0,0],zoom:1,interactive:false,attributionControl:false,renderWorldCopies:true,fadeDuration:0});
+ let currentStyle='';
+ map.on('error',e=>{window.VeloState={status:'error',error:String(e.error&&e.error.message||'map load error')};});
+ map.on('idle',()=>{window.VeloState={status:'ready',error:''};});
+ window.Velo={camera(lon,lat,zoom,style){map.resize();map.jumpTo({center:[lon,lat],zoom:zoom,bearing:0,pitch:0});if(style&&style!==currentStyle){currentStyle=style;window.VeloState={status:'loading',error:''};map.setStyle(style);}return true;},project(lon,lat){const p=map.project([lon,lat]);return {x:p.x,y:p.y,dpr:window.devicePixelRatio,width:map.getCanvas().width,height:map.getCanvas().height};}};
+} catch(e){window.VeloState={status:'unsupported',error:String(e)};}
+</script></body></html>

@@ -1,0 +1,6 @@
+﻿param([int]$Port=8765)
+$ErrorActionPreference='Stop'
+$apk=Join-Path (Split-Path $PSScriptRoot -Parent) 'dist\VELO-PhoneBridge-v1.0.4.apk'
+$listener=[Net.Sockets.TcpListener]::new([Net.IPAddress]::Any,$Port);$listener.Start()
+Write-Host "On the same LAN, open http://YOUR-PC-IP:$Port/app.apk . Ctrl+C stops sharing. Only the APK is served."
+try{while($true){$client=$listener.AcceptTcpClient();try{$client.ReceiveTimeout=5000;$client.SendTimeout=10000;$stream=$client.GetStream();$reader=[IO.StreamReader]::new($stream);$request=$reader.ReadLine();do{$line=$reader.ReadLine()}while($line);$parts=$request.Split(' ');$ok=$parts.Length -ge 2 -and $parts[0] -in @('GET','HEAD') -and $parts[1].Split('?')[0] -eq '/app.apk';$bytes=if($ok){[IO.File]::ReadAllBytes($apk)}else{[Text.Encoding]::UTF8.GetBytes('Not found')};$status=if($ok){'200 OK'}else{'404 Not Found'};$header="HTTP/1.1 $status`r`nContent-Type: application/vnd.android.package-archive`r`nContent-Length: $($bytes.Length)`r`nContent-Disposition: attachment; filename=VELO-PhoneBridge-v1.0.4.apk`r`nCache-Control: no-store`r`nConnection: close`r`n`r`n";$head=[Text.Encoding]::ASCII.GetBytes($header);$stream.Write($head,0,$head.Length);if($parts[0] -ne 'HEAD'){$stream.Write($bytes,0,$bytes.Length)};$stream.Flush()}catch{}finally{$client.Dispose()}}}finally{$listener.Stop()}
