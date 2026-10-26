@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="610" viewBox="0 0 1120 610" role="img" aria-labelledby="title desc">
+<title id="title">VELO 当前硬件连接</title><desc id="desc">电池连接充放电升压板电池端，升压板通过 USB-A 转 Type-C 线给带屏 ESP32 供电。Android 手机通过经典蓝牙 SPP 发送导航数据。板载屏幕通过 PCB 内部 SPI 连接。</desc>
+<defs><marker id="power" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#059669"/></marker><marker id="data" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2563eb"/></marker></defs>
+<rect width="1120" height="610" rx="24" fill="#f8fafc"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif">
+<text x="44" y="55" font-size="28" font-weight="700" fill="#0f172a">VELO / 硬件与供电连接</text>
+<text x="44" y="85" font-size="16" fill="#64748b">当前原型 · 原带屏 ESP32 方案 · 绿色为供电，蓝色为数据</text>
+<rect x="44" y="145" width="220" height="132" rx="16" fill="#fff" stroke="#cbd5e1"/>
+<text x="66" y="183" font-size="23" font-weight="700" fill="#0f172a">锂电池</text><text x="66" y="216" font-size="16" fill="#475569">正 / 负极 → 电池端 B+ / B−</text><text x="66" y="246" font-size="14" fill="#64748b">容量与型号尚未记录</text>
+<rect x="358" y="145" width="290" height="132" rx="16" fill="#ecfdf5" stroke="#6ee7b7"/>
+<text x="380" y="183" font-size="23" font-weight="700" fill="#065f46">充放电 / 5V 升压板</text><text x="380" y="216" font-size="16" fill="#065f46">电池端输入 · USB-A 输出</text><text x="380" y="246" font-size="14" fill="#047857">带电量数码显示；具体型号未确认</text>
+<path d="M264 211H348" stroke="#059669" stroke-width="3" marker-end="url(#power)"/>
+<rect x="760" y="145" width="314" height="302" rx="16" fill="#fff" stroke="#94a3b8"/>
+<text x="784" y="183" font-size="23" font-weight="700" fill="#0f172a">Ideaspark ESP32</text><text x="784" y="215" font-size="16" fill="#475569">ESP32-WROOM-32 · USB-C 供电</text>
+<path d="M648 211H750" stroke="#059669" stroke-width="3" marker-end="url(#power)"/><text x="664" y="170" font-size="15" fill="#047857">5V USB</text><text x="661" y="244" font-size="13" fill="#475569">A → Type-C</text>
+<rect x="784" y="270" width="266" height="147" rx="12" fill="#0f172a"/>
+<text x="806" y="303" font-size="20" font-weight="700" fill="#fff">板载 ST7789 显示屏</text><text x="806" y="334" font-size="16" fill="#cbd5e1">1.14 英寸 · 135 × 240</text><text x="806" y="365" font-size="16" fill="#6ee7b7">速度 / 路线 / 转向提示</text><text x="806" y="394" font-size="14" fill="#cbd5e1">内部 SPI 走线，无需外接屏线</text>
+<rect x="358" y="347" width="290" height="116" rx="16" fill="#eff6ff" stroke="#93c5fd"/>
+<text x="380" y="384" font-size="23" font-weight="700" fill="#1e40af">Android 手机</text><text x="380" y="415" font-size="16" fill="#1e40af">GPS · 骑行路线 · 导航计算</text><text x="380" y="442" font-size="14" fill="#2563eb">无线连接，无手机到码表的供电线</text>
+<path d="M648 381H750" stroke="#2563eb" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#data)"/><text x="661" y="331" font-size="15" fill="#1d4ed8">经典蓝牙</text><text x="676" y="354" font-size="14" fill="#1d4ed8">SPP</text>
+<path d="M44 505H1074" stroke="#e2e8f0"/>
+<text x="44" y="539" font-size="16" fill="#334155">实物连接：电池 → 升压板 → USB 线 → 带屏 ESP32；当前不使用 C3 或外接 2 英寸屏。</text>
+<text x="44" y="569" font-size="14" fill="#64748b">供电路径依据实物照片；胶带下电池焊点不可见，B+ / B− 应按模块丝印核对。示意图不代表 PCB 原理图。</text>
+</g></svg>
