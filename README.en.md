@@ -1,12 +1,46 @@
 # VELO · ESP32 Bicycle Computer
 
-[简体中文](README.md) · [日本語](README.ja.md) · [English](README.en.md)
+[日本語](README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md)
 
 > Keep your phone in your pocket and your guidance on the handlebars.
 
 VELO is an experimental bicycle computer system. An Android phone handles place search, bicycle route planning, GPS and navigation. An ESP32 receives updates over Bluetooth Classic and displays speed, a route sketch and turn guidance on a 135×240 screen.
 
 **Status: development prototype for testing, not a production navigation device. Current Android app: 1.0.4. Firmware: 0.10.1. Their version numbers are independent.**
+
+## Physical prototype and wiring
+
+<p align="center">
+  <img src="docs/images/velo-current-wiring-20261026.jpg" width="440" alt="VELO prototype: lithium battery, charging and 5V boost board with battery indicator, and ESP32 with built-in display" />
+</p>
+<p align="center"><em>Current prototype — the phone computes navigation; the handlebar display shows the guidance.</em></p>
+
+### Components
+
+| Component | Role | Connection |
+| --- | --- | --- |
+| **Android phone** | GPS, bicycle route planning, navigation and ride logging | Sends data over **Bluetooth Classic SPP** |
+| **Ideaspark ESP32-WROOM-32 display board** | Receives data and renders speed, routes and guidance | Receives 5V through its USB-C port |
+| **Built-in 1.14-inch ST7789 display** | 135 × 240 pixels; BOOT button switches pages | Connected through internal PCB SPI traces |
+| **Lithium battery** | Portable power | Connected to the power board's battery terminals; model and capacity unconfirmed |
+| **Charging / 5V boost board with battery indicator** | Battery charging and discharge management, voltage boost and charge-level display | USB-A output; exact module model unconfirmed |
+| **USB-A → Type-C cable, breadboard and mounting materials** | Power connection and prototype assembly | Cable connects the power board to the ESP32 USB-C port |
+
+### Wiring diagram
+
+```mermaid
+flowchart LR
+    Battery["Lithium battery"] -->|"Battery terminals B+ / B−"| Power["Charging / 5V boost board"]
+    Power -->|"5V · USB-A → Type-C"| ESP["ESP32-WROOM-32"]
+    Phone["Android phone / GPS and navigation"] -.->|"Bluetooth Classic SPP"| ESP
+    ESP -->|"Internal PCB SPI"| Screen["Built-in ST7789 / 135 × 240"]
+```
+
+**Power:** battery → boost board → USB cable → ESP32 USB-C port. The current assembly does not connect the battery directly to VIN.
+
+**Data:** phone → Bluetooth Classic SPP → ESP32 → built-in display. This assembly uses no external GPS, compass, C3 or separate 2-inch display.
+
+Check battery polarity against the power board's terminal markings. Tape covers the battery joints in the photo, so their actual wiring cannot be verified visually. See the hardware configuration below for the display GPIO mapping. The photographed screen is waiting for phone data.
 
 ## Interface and hardware
 

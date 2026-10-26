@@ -1,63 +1,69 @@
 # VELO · ESP32 Bicycle Computer
 
-[简体中文](README.md) · [日本語](README.ja.md) · [English](README.en.md)
+[日本語](README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md)
 
-> 把手机放进口袋，把导航留在车把上。
+> スマートフォンはポケットへ。ナビゲーションはハンドルへ。
 
-VELO 是一套正在开发的自行车码表系统：Android 手机负责地点搜索、自行车路线规划、GPS 定位和导航计算，ESP32 通过经典蓝牙接收数据，在 135×240 小屏幕上显示速度、路线与转向提示。
+VELO は開発中の自転車用サイクルコンピューターです。Android スマートフォンが地点検索、自転車ルートの作成、GPS 測位と案内計算を担当し、ESP32 が Bluetooth Classic 経由で受信した速度、簡易ルート、曲がり角の案内を 135×240 の画面に表示します。
 
-**项目状态：实验性原型，适合开发与试骑验证，尚不能视为成熟商用导航设备。当前 App 为 1.0.4，固件为 0.10.1；两者版本号独立。**
+**開発状況：試作・試走検証用です。商用ナビゲーション機器と同等の信頼性を保証するものではありません。Android アプリは 1.0.4、ファームウェアは 0.10.1 です。バージョン番号は別管理です。**
 
-## 实物原型与硬件连接
+## 実物プロトタイプと配線
 
 <p align="center">
-  <img src="docs/images/velo-current-wiring-20261026.jpg" width="440" alt="VELO 实物原型：锂电池、带电量显示的充放电升压板与带屏 ESP32，通过 USB 线供电" />
+  <img src="docs/images/velo-current-wiring-20261026.jpg" width="440" alt="VELO の実物：リチウム電池、残量表示付き充放電・5V 昇圧基板、画面付き ESP32" />
 </p>
-<p align="center"><em>当前实物原型 · 手机负责导航计算，车把上的小屏负责显示。</em></p>
+<p align="center"><em>現在のプロトタイプ — スマートフォンが経路を計算し、ハンドル上の画面に案内を表示します。</em></p>
 
-### 用了什么组件
+### 使用部品
 
-| 组件 | 在系统中的作用 | 当前连接方式 |
+| 部品 | 役割 | 接続方法 |
 | --- | --- | --- |
-| **Android 手机** | GPS 定位、骑行路线规划、导航计算与骑行记录 | 通过 **经典蓝牙 SPP** 向码表发送数据 |
-| **Ideaspark ESP32-WROOM-32 带屏开发板** | 接收手机数据，绘制速度、路线及转向提示 | USB-C 接收升压板的 5V 输出 |
-| **板载 1.14 英寸 ST7789 屏幕** | 135 × 240 像素显示；BOOT 按键切换页面 | 已由 PCB 内部 SPI 走线连接，无需外接屏幕线 |
-| **锂电池** | 提供移动供电 | 接充放电板的电池端；型号、容量待补充 |
-| **带电量显示的充放电 / 5V 升压板** | 电池充放电管理、升压供电、电量显示 | USB-A 输出连接码表；具体模块型号待补充 |
-| **USB-A → Type-C 线、面包板与固定材料** | 连接供电并搭建原型 | USB 线从升压板直接接到码表 USB-C 接口 |
+| **Android スマートフォン** | GPS 測位、自転車ルートの作成、案内計算、走行記録 | **Bluetooth Classic SPP** でデータを送信 |
+| **Ideaspark ESP32-WROOM-32 搭載基板** | データの受信と速度・ルート・案内の描画 | 昇圧基板の 5V 出力を USB-C で受電 |
+| **基板搭載 1.14 インチ ST7789 画面** | 135 × 240 ピクセル表示、BOOT ボタンでページ切り替え | PCB 内部の SPI 配線で接続済み |
+| **リチウム電池** | 携帯用電源 | 充放電基板の電池端子へ接続。型番・容量は未確認 |
+| **残量表示付き充放電・5V 昇圧基板** | 電池の充放電管理、昇圧給電、残量表示 | USB-A 端子から出力。基板型番は未確認 |
+| **USB-A → Type-C ケーブル、ブレッドボード、固定材** | 電源接続と試作部品の固定 | 昇圧基板から ESP32 の USB-C 端子へ接続 |
 
-### 接线示意图
+### 接続図
 
-![VELO 硬件供电路径与蓝牙数据连接](docs/images/velo-hardware-wiring.svg)
+```mermaid
+flowchart LR
+    Battery["リチウム電池"] -->|"電池端子 B+ / B−"| Power["充放電・5V 昇圧基板"]
+    Power -->|"5V · USB-A → Type-C"| ESP["ESP32-WROOM-32"]
+    Phone["Android スマートフォン / GPS・案内計算"] -.->|"Bluetooth Classic SPP"| ESP
+    ESP -->|"PCB 内部 SPI"| Screen["基板搭載 ST7789 / 135 × 240"]
+```
 
-**供电路径：** 锂电池 → 充放电升压板 → 5V USB-A 输出 → USB-A / Type-C 线 → ESP32 USB-C 接口。当前实物通过 USB 供电，未采用电池直接接码表 VIN 的方式。
+**電源：** 電池 → 昇圧基板 → USB ケーブル → ESP32 の USB-C 端子。現在は電池を VIN に直結していません。
 
-**数据路径：** 手机 GPS / 路线计算 → 经典蓝牙 SPP → ESP32 → 板载屏幕。当前方案没有外接 GPS、罗盘，也未使用 C3 或外接 2 英寸屏。
+**データ：** スマートフォン → Bluetooth Classic SPP → ESP32 → 基板搭載画面。外付け GPS・コンパス、C3、外付け 2 インチ画面は使用していません。
 
-电池正负极应按充放电板的电池端丝印接入；照片中的焊点被胶带覆盖，图中不推断隐藏接线。屏幕的 PCB 内部 GPIO 对应关系见下方「硬件配置」。照片里屏幕处于等待手机数据的状态，不代表正在导航。
+電池端子の極性は基板の表記で確認してください。写真では接合部がテープに隠れているため、内部配線の実際の状態は確認できません。画面の GPIO 対応は後述のハードウェア構成を参照してください。写真はスマートフォンのデータを待っている状態です。
 
-## 界面与硬件
+## 画面とハードウェア
 
-| Android 地图首页 | 收藏与地点分组 |
+| Android の地図ホーム | お気に入りとグループ |
 | --- | --- |
 | <img src="docs/images/app-map.png" width="270" alt="Android map" /> | <img src="docs/images/app-favorites.png" width="270" alt="Saved places" /> |
 
-| 设备页码表数据预览 | ESP32 地图页 |
+| 端末画面のデータプレビュー | ESP32 の地図画面 |
 | --- | --- |
 | <img src="docs/images/app-device-preview.png" width="270" alt="Board data preview" /> | <img src="docs/images/board-map.png" width="200" alt="ESP32 display" /> |
 
-图片包含模拟器验收数据和不同开发阶段的截图，并非实机蓝牙与道路安全验收证明。设备预览不是屏幕截图，不读取码表实际按键页面。
+画像にはエミュレーターの検証用データと開発途中の画面が含まれます。実機での Bluetooth 動作や道路上の安全性を証明する画像ではありません。プレビューは実画面のキャプチャではなく、送信データの再描画です。
 
-## 已经实现
+## 実装済みの機能
 
-- 应用内地点搜索、十进制／度分秒坐标输入、地图长按选点。
-- 明确选择起点、终点与最多 8 个途经点，规划自行车路线。
-- 收藏的名称、分组、备注和颜色；GeoJSON 导入导出。
-- 多条路线保存、重命名、GPX 导入导出及本地骑行记录。
-- 打开应用后连接已选码表，断线重试；开始、暂停、继续、结束骑行。
-- 码表显示速度、里程、时间、路线、周边路网和转向／反向状态。
-- 可拖动面板、全屏地图、缩放按钮、原生点击反馈与页面过渡。
-- 连接后显示依据已发送数据绘制的码表预览；可清除当前路线且重开不恢复。
+- アプリ内の地点検索、十進数・度分秒の座標入力、地図の長押し選択。
+- 出発地、目的地、最大 8 か所の経由地を明示して自転車ルートを作成。
+- お気に入りの名前、グループ、メモ、色の保存と GeoJSON 入出力。
+- 複数ルートの保存・名前変更、GPX 入出力、端末内の走行記録。
+- 選択したペアリング済み端末への自動接続、再接続、走行の一時停止と再開。
+- ESP32 上の速度、距離、時間、ルート、周辺道路と案内状態。
+- ドラッグ可能なボトムシート、地図の拡大表示、ズーム操作と画面遷移。
+- 接続後の送信データに基づく画面プレビューと、再起動後も維持される現在ルートの消去。
 
 ```mermaid
 flowchart LR
@@ -67,18 +73,18 @@ flowchart LR
     Phone --> DB["Local SQLite · places / routes / rides"]
 ```
 
-## 硬件配置
+## ハードウェア構成
 
-| 项目 | 配置 |
+| 項目 | 構成 |
 | --- | --- |
-| 开发板 | Ideaspark ESP32-WROOM-32，USB-C / CH340 |
-| 显示屏 | 板载 ST7789，135×240，约 1.14 英寸 |
-| 通信 | 经典蓝牙 SPP；不是 BLE |
-| 定位与航向 | 手机 GPS 及移动轨迹；板上未外接 GPS 或罗盘 |
-| 测试手机 | TCL NXTPAPER 70 Pro（用户设备） |
-| 原电脑串口 | COM8；换电脑后必须重新确认 |
+| 開発ボード | Ideaspark ESP32-WROOM-32、USB-C / CH340 |
+| ディスプレイ | 内蔵 ST7789、135×240、約 1.14 インチ |
+| 通信 | Bluetooth Classic SPP（BLE ではありません） |
+| 位置・進行方向 | スマートフォンの GPS と実際の移動。ボードに外付け GPS・コンパスはありません |
+| 使用スマートフォン | TCL NXTPAPER 70 Pro |
+| 元の USB ポート | COM8。移行先ではポートを再確認してください |
 
-### 屏幕引脚
+### 画面のピン配置
 
 | 信号 | GPIO |
 | --- | --- |
@@ -87,32 +93,32 @@ flowchart LR
 | CS | 15 |
 | DC | 2 |
 | RST | 4 |
-| 背光 | 32，高电平亮 |
-| 切页按键 | BOOT / GPIO0，低电平按下 |
+| バックライト | 32、HIGH で点灯 |
+| 画面切替ボタン | BOOT / GPIO0、LOW で押下 |
 
-这些是当前 PCB 已使用的引脚，不是所有 ESP32 + ST7789 模块的通用接线。
+このピン配置は本プロジェクトで使っている基板用です。他の ESP32 / ST7789 基板にそのまま適用しないでください。
 
-## 在新电脑上继续开发
+## 別のパソコンで開発を続ける
 
-1. 下载仓库 ZIP 或克隆仓库，保留整个目录结构。
-2. 直接安装 `dist/VELO-PhoneBridge-v1.0.4.apk`；覆盖安装时不要先卸载旧 App。
-3. 安装 JDK（原环境为 20.0.1）、Android SDK Platform 35、Build Tools 35.0.0 和 Platform Tools，设置 `JAVA_HOME` 与 `ANDROID_SDK_ROOT`。
-4. **私下转移原签名密钥**，放入 `private-signing/velo-test.keystore`，设置 `VELO_KEYSTORE_PASSWORD` / `VELO_KEY_PASSWORD`。密钥不在 GitHub 中；丢失后无法用新密钥覆盖原安装。
-5. ESP32 开发需 Arduino IDE 或 Arduino CLI，以及 `esp32:esp32` 3.3.12。显示驱动库的源码已放在 `dependencies/arduino-libraries`。
+1. リポジトリ全体をクローン、または ZIP でダウンロードしてください。
+2. `dist/VELO-PhoneBridge-v1.0.4.apk` をインストールします。上書き更新する場合、旧アプリを先に削除しないでください。
+3. JDK（元の環境は 20.0.1）、Android SDK Platform 35、Build Tools 35.0.0、Platform Tools を用意し、`JAVA_HOME` と `ANDROID_SDK_ROOT` を設定します。
+4. **元の署名鍵を非公開の方法で移行**し、`private-signing/velo-test.keystore` に置きます。`VELO_KEYSTORE_PASSWORD` と `VELO_KEY_PASSWORD` を設定してください。鍵は GitHub に含まれません。別の鍵では既存アプリを上書き更新できません。
+5. ESP32 の開発には Arduino IDE または CLI と `esp32:esp32` 3.3.12 を使用します。画面用ライブラリのソースは `dependencies/arduino-libraries` に同梱しています。
 
 ```powershell
-# 在仓库根目录的 PowerShell 中执行
+# リポジトリのルートで PowerShell を実行
 .\scripts\check-environment.ps1
 .\scripts\build-android.ps1
-# 仅编译固件，不会烧录
+# コンパイルのみ。ボードには書き込みません
 .\scripts\firmware.ps1 -Action build
-# 上传已附带的 0.10.1 固件；改成实际串口
+# 同梱の 0.10.1 を書き込み。実際のポートを指定
 .\scripts\firmware.ps1 -Action upload -Port COM8
 ```
 
-完整迁移、构建、签名、手机数据和维护说明：**[项目迁移手册](docs/MIGRATION.md)**。当前工程使用 Java 原生视图和手动 Android SDK 构建脚本，**不是 Gradle / Compose / Material Components 工程**。
+署名、ビルド、スマートフォン内データの移行は **[移行・保守ガイド](docs/MIGRATION.md)**（中国語）をご覧ください。現在は Java のネイティブ View と Android SDK の手動ビルド方式であり、**Gradle / Compose / Material Components のプロジェクトではありません**。
 
-## 目录结构
+## ディレクトリ構成
 
 ```text
 android/                 Java source, manifest, resources, bundled MapLibre
@@ -127,28 +133,28 @@ dependencies/arduino-libraries/  Pinned display-library sources
 prototypes/              Original editable interface prototype
 ```
 
-## 使用边界与待办
+## 制限事項と今後の課題
 
-- 地图、地点搜索和新路线规划依赖网络，公共免费服务没有可用性保证，覆盖不等同于 Google。
-- 行进朝向来自手机实际移动；原地旋转不提供可靠朝向。
-- 前台定位服务已经实现；TCL 锁屏、省电与后台持续导航尚需实机长时间验证，异常退出后自动恢复未完成。
-- Android 预览仅反映已发送内容，不能确认 ESP32 已实际显示。
-- 没有随包导出手机中的私人收藏、路线数据库或骑行轨迹；请在原手机先导出需要的数据。
-- 当前没有 CI 自动保证；测试脚本仅限可丢弃模拟器，部分测试会联网并修改应用数据。
+- 新しい地図・検索・ルート作成には通信が必要です。無料の公開サービスには Google との検索範囲の差があり、稼働保証はありません。
+- 進行方向は実際の移動から推定します。停止したまま端末を回しても信頼できる方角は得られません。
+- フォアグラウンド位置サービスは実装済みですが、TCL 実機での長時間のロック画面・省電力試験と、プロセス終了後の自動復帰は未完了です。
+- データプレビューでは、ESP32 が実際に何を表示したかまでは確認できません。
+- スマートフォン内の個人のお気に入り、ルート DB、走行軌跡は含まれません。必要なデータは元の端末から書き出してください。
+- CI は未設定です。アプリデータを変更するテストは使い捨てのエミュレーターで実行してください。一部のテストは実際のネットワークサービスを使用します。
 
-## 验证
+## 検証
 
-1.0.4 开发记录：19 项清除路线与界面专项检查、59 项应用集成回归通过。迁移检查与实机验收分别记录。
+1.0.4 の開発時にはルート消去・UI の 19 項目とアプリ統合の 59 項目を確認しました。リポジトリ移行の確認と実機・公道での検証は別扱いです。
 
 ```powershell
 # Disposable Android emulator only; build the app first.
 .\scripts\test-android.ps1 -Suite clear -Device emulator-5554
 ```
 
-## 依赖与许可
+## 依存関係とライセンス
 
-手机地图使用 MapLibre GL JS 5.10.0，默认服务为 OpenFreeMap、Photon 与 BRouter。保留地图署名与第三方许可，详见 [THIRD_PARTY.md](THIRD_PARTY.md)。本仓库尚未单独授予项目自有代码的开源许可证；公开可见不等于授予任意再许可权。
+スマートフォンの地図描画は MapLibre GL JS 5.10.0 を利用し、既定のサービスは OpenFreeMap、Photon、BRouter です。帰属表示と第三者ライセンスを維持してください。[THIRD_PARTY.md](THIRD_PARTY.md) にまとめています。プロジェクト独自コードのオープンソースライセンスは未選択です。公開されていること自体が自由な再利用の許諾を意味するものではありません。
 
-迁移目录已完成独立构建和检查，见 [迁移验证记录](docs/PORTABILITY_CHECK.md)。
+移行用ディレクトリで独立したビルドと確認を実施しました。[移行確認記録](docs/PORTABILITY_CHECK.md)をご覧ください。
 
 [Release · APK / ZIP](https://github.com/1xiaohuozi/velo-bike-computer/releases/tag/v1.0.4)
